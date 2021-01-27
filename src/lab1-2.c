@@ -46,11 +46,14 @@ void insertion_sort(int length, int* arr)
         arr[j + 1] = current_num;
     }
 }
+/*
+Write swap function to swap array values given two indices
+*/
 
 int main()
 {
-#define ARRAY_LEN 26
-    int arr[ARRAY_LEN] = {8,7,7,45,5,5,8,74,54,5,78,7,7,4,5,58,58,7,4,15,5,7,74,14,5,8};
+#define ARRAY_LEN 8
+    int arr[ARRAY_LEN] = {6,5,3,1,8,7,2,4};
     print_array(ARRAY_LEN, arr);
     insertion_sort(ARRAY_LEN, arr);
     printf("\n\n");
