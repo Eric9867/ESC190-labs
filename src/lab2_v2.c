@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define INT_TYPE 0
+#define FLOAT_TYPE 1
+#define DOUBLE_TYPE 2
+
 struct Node
 {
     union {
@@ -18,7 +22,7 @@ void append_int(struct Node *node, int value)
     {
         struct Node *tail = (struct Node *)malloc(sizeof(struct Node));
         tail->data.d = value;
-        tail->type = 0;
+        tail->type = INT_TYPE;
         tail->next = NULL;
         node->next = tail;
         return;
@@ -32,7 +36,7 @@ void append_float(struct Node *node, float value)
     {
         struct Node *tail = (struct Node *)malloc(sizeof(struct Node));
         tail->data.f = value;
-        tail->type = 1;
+        tail->type = FLOAT_TYPE;
         tail->next = NULL;
         node->next = tail;
         return;
@@ -46,7 +50,7 @@ void append_double(struct Node *node, double value)
     {
         struct Node *tail = (struct Node *)malloc(sizeof(struct Node));
         tail->data.lf = value;
-        tail->type = 2;
+        tail->type = DOUBLE_TYPE;
         tail->next = NULL;
         node->next = tail;
         return;
@@ -63,13 +67,13 @@ void print_list(struct Node* node)
     }
     switch(node->type)
     {
-        case 0:
+        case INT_TYPE:
             printf("%d\t", node->data.d);
             break;
-        case 1:
+        case FLOAT_TYPE:
             printf("%f\t", node->data.f);
             break;
-        case 2:
+        case DOUBLE_TYPE:
             printf("%lf\t", node->data.lf);
             break;
         // default:
@@ -90,7 +94,7 @@ int main()
     struct Node* node = (struct Node*)malloc(sizeof(struct Node));
 
     /* TODO: make function to initialize */
-    node->type = 0;
+    node->type = INT_TYPE;
     node->data.d = 0;
     node->next = NULL;
 

@@ -25,6 +25,10 @@ You may like to write the functinos append_int, append_float, and append_double 
 #include <stdio.h>
 #include <stdlib.h>
 
+#define INT_TYPE 0
+#define FLOAT_TYPE 1
+#define DOUBLE_TYPE 2
+
 struct NodeA
 {
     int data; /* in Python: void* data, also need data type */
@@ -84,12 +88,12 @@ void append_int(struct NodeB *node, int value)
 {
     if (node->next == NULL)
     {
-        struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB));
+        struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB) + sizeof(int));
         if(tail == NULL) abort();
-        int* node_value_address = malloc(sizeof(int));
-        *node_value_address = value;
-        tail->p_data = node_value_address;
-        tail->type = 0;
+        tail->p_data = tail + 1;
+        *((int*)tail->p_data) = value;
+        
+        tail->type = INT_TYPE;
         tail->next = NULL;
         node->next = tail;
         return;
@@ -101,29 +105,27 @@ void append_float(struct NodeB *node, float value)
 {
     if (node->next == NULL)
     {
-        struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB));
+        struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB) + sizeof(float));
         if(tail == NULL) abort();
-        float* node_value_address = malloc(sizeof(float));
-        *node_value_address = value;
-        tail->p_data = node_value_address;
-        tail->type = 1;
+        tail->p_data = tail + 1;
+        *((float*)tail->p_data) = value;
+        tail->type = FLOAT_TYPE;
         tail->next = NULL;
         node->next = tail;
         return;
     }
-    append_float(node->next, value);    
+    append_float(node->next, value);
 }
 
 void append_double(struct NodeB *node, double value)
 {
     if (node->next == NULL)
     {
-        struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB));
+        struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB) + sizeof(double));
         if(tail == NULL) abort();
-        double* node_value_address = malloc(sizeof(double));
-        *node_value_address = value;
-        tail->p_data = node_value_address;
-        tail->type = 2;
+        tail->p_data = tail + 1;
+        *((double*)tail->p_data) = value;
+        tail->type = DOUBLE_TYPE;
         tail->next = NULL;
         node->next = tail;
         return;
@@ -140,13 +142,13 @@ void print_list_b(struct NodeB* node)
     }
     switch(node->type)
     {
-        case 0:
+        case INT_TYPE:
             printf("%d\t", *((int*)node->p_data));
             break;
-        case 1:
+        case FLOAT_TYPE:
             printf("%f\t", *((float*)node->p_data));
             break;
-        case 2:
+        case DOUBLE_TYPE:
             printf("%lf\t", *((double*)node->p_data));
             break;
         // default:
@@ -157,7 +159,6 @@ void print_list_b(struct NodeB* node)
 void free_list_b(struct NodeB* node)
 {
     if(node->next != NULL) free_list_b(node->next);
-    free(node->p_data);
     free(node);
 }
 
@@ -185,17 +186,17 @@ int main()
     if(node_1 == NULL) abort();
 
     /* TODO: make function to initialize */
-    node_1->type = 0;
+    node_1->type = INT_TYPE;
     int* node_value_address = malloc(sizeof(int)); /*freed in free_list_b*/
     if(node_value_address == NULL) abort();
     *node_value_address = 0;
     node_1->p_data = node_value_address;
     node_1->next = NULL;
 
-    append_float(node_1, 1.0);
+    append_float(node_1, 1.0f);
     append_double(node_1, 2.2);
-    append_float(node_1, 4.8);
-    append_float(node_1, 6.4);
+    append_float(node_1, 4.8f);
+    append_float(node_1, 6.4f);
     append_int(node_1, 8);
     append_int(node_1, 1);
     append_int(node_1, 3);
