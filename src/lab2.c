@@ -36,6 +36,7 @@ void append(struct NodeA* head, int value)
     struct NodeA* node = head;
     while (node->next != NULL) node = node->next;
     struct NodeA* new = (struct NodeA*) malloc(sizeof(struct NodeA));
+    if(new == NULL) abort();
     node->next = new;
     new->data = value;
     new->next = NULL;
@@ -46,6 +47,7 @@ void free_list(struct NodeA* node)
     if(node->next != NULL) free_list(node->next);
     free(node);
 }
+
 
 /*** Part 1 ***/
 void print_list(struct NodeA* head)
@@ -83,12 +85,15 @@ void append_int(struct NodeB *node, int value)
     if (node->next == NULL)
     {
         struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB));
-        *((int*)tail->p_data) = value;
+        if(tail == NULL) abort();
+        int* node_value_address = malloc(sizeof(int));
+        *node_value_address = value;
+        tail->p_data = node_value_address;
         tail->type = 0;
+        tail->next = NULL;
         node->next = tail;
         return;
     }
-    
     append_int(node->next, value);    
 }
 
@@ -97,12 +102,15 @@ void append_float(struct NodeB *node, float value)
     if (node->next == NULL)
     {
         struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB));
-        *((float*)tail->p_data) = value;
+        if(tail == NULL) abort();
+        float* node_value_address = malloc(sizeof(float));
+        *node_value_address = value;
+        tail->p_data = node_value_address;
         tail->type = 1;
+        tail->next = NULL;
         node->next = tail;
         return;
     }
-    
     append_float(node->next, value);    
 }
 
@@ -111,18 +119,19 @@ void append_double(struct NodeB *node, double value)
     if (node->next == NULL)
     {
         struct NodeB *tail = (struct NodeB *)malloc(sizeof(struct NodeB));
-        *((double*)tail->p_data) = value;
+        if(tail == NULL) abort();
+        double* node_value_address = malloc(sizeof(double));
+        *node_value_address = value;
+        tail->p_data = node_value_address;
         tail->type = 2;
+        tail->next = NULL;
         node->next = tail;
         return;
     }
-    
     append_double(node->next, value);    
 }
 
-
-  
-void print_list_B(struct NodeB* node)
+void print_list_b(struct NodeB* node)
 {
     if(node == NULL) 
     {
@@ -142,17 +151,25 @@ void print_list_B(struct NodeB* node)
             break;
         // default:
     }
-    print_list_B(node->next);
+    print_list_b(node->next);
 }
 
+void free_list_b(struct NodeB* node)
+{
+    if(node->next != NULL) free_list_b(node->next);
+    free(node->p_data);
+    free(node);
+}
 
 
 
 int main()
 {
-    printf("--------------------Part 1--------------------");
+    printf("--------------------Part 1--------------------\n");
     struct NodeA* node_0 = (struct NodeA*) malloc(sizeof(struct NodeA));
+    if(node_0 == NULL) abort();
     node_0->data = 3;
+    node_0->next = NULL;
     append(node_0, 7);
     append(node_0, 2);
     append(node_0, 9);
@@ -163,10 +180,29 @@ int main()
     print_list_recursive(node_0);
 
 
-    printf("--------------------Part 2--------------------");
-    
+    printf("--------------------Part 2--------------------\n");
+    struct NodeB* node_1 = (struct NodeB*)malloc(sizeof(struct NodeB));
+    if(node_1 == NULL) abort();
 
+    /* TODO: make function to initialize */
+    node_1->type = 0;
+    int* node_value_address = malloc(sizeof(int)); /*freed in free_list_b*/
+    if(node_value_address == NULL) abort();
+    *node_value_address = 0;
+    node_1->p_data = node_value_address;
+    node_1->next = NULL;
+
+    append_float(node_1, 1.0);
+    append_double(node_1, 2.2);
+    append_float(node_1, 4.8);
+    append_float(node_1, 6.4);
+    append_int(node_1, 8);
+    append_int(node_1, 1);
+    append_int(node_1, 3);
+
+    print_list_b(node_1);
     
     free_list(node_0);
+    free_list_b(node_1);
     return 0;
 }
