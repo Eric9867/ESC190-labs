@@ -87,6 +87,16 @@ void free_list(struct Node* node)
     free(node);
 }
 
+void free_list_loop(struct Node* node)
+{
+    struct Node* next;
+    while(node != NULL)
+    {
+        next = node->next;
+        free(node);
+    }
+}
+
 
 int main()
 {
