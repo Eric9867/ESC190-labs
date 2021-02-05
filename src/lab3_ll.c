@@ -18,5 +18,6 @@ void free_list(struct Node* node)
     {
         next = node->next;
         free(node);
+        node = next;
     }
 }

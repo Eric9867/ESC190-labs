@@ -1,16 +1,17 @@
 #ifndef AUTOCOMPLETE_H_
 #define AUTOCOMPLETE_H_
 
-#define TERM_LENGTH 100
+#define TERM_SIZE 100
 
 struct Term{
-    char term[TERM_LENGTH]; // *******changed to 100, watch out for related errors******* assume terms are not longer than 200
+    char term[TERM_SIZE]; // *******changed to 100, watch out for related errors******* assume terms are not longer than 200
     double weight;
 };
 
-void read_in_terms(struct term **terms, int *pnterms, char *filename);
-int lowest_match(struct term *terms, int nterms, char *substr);
-int highest_match(struct term *terms, int nterms, char *substr);
-void autocomplete(struct term **answer, int *n_answer, struct term *terms, int nterms, char *substr);
+void read_in_terms(struct Term **terms, int *pnterms, char *filename);
+int term_comparison(const void*, const void*);
+int lowest_match(struct Term *terms, int n_terms, char *substr);
+int highest_match(struct Term *terms, int n_terms, char *substr);
+void autocomplete(struct Term **answer, int *n_answer, struct Term *terms, int nterms, char *substr);
 
 #endif

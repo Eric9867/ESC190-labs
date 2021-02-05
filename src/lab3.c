@@ -76,12 +76,14 @@ int my_atoi(char* str)
  */
 int floyd(struct Node* head)
 {
+	if(head == NULL || head->next == NULL)
+		return 0;
 	struct Node* tortoise = head;
 	struct Node* hare = head->next->next;
 
 	while (tortoise != hare)
 	{
-		if ( hare->next == NULL || hare->next->next == NULL ) return 0;
+		if ( hare == NULL || hare->next == NULL ) return 0;
 		tortoise = tortoise->next;
 		hare = hare->next->next;
 	}
@@ -107,7 +109,7 @@ int main(void)
 
 	printf("-----------------Part 2-----------------\n");
 	str_a = "Dairy Queen";
-	str_b = "Dairy King";
+	str_b = "Dairy Queen";
 	printf("String comparison [%s] vs. [%s]:  %d\n", str_a, str_b, my_strcmp_rec(str_a, str_b));
 
 	printf("-----------------Part 3-----------------\n");
