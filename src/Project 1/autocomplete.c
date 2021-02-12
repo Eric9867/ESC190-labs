@@ -28,7 +28,7 @@ void read_in_terms(struct Term **terms, int *pnterms, char *filename)
             (*terms)[i].term, TERM_SIZE
         ) > 0;
         i++
-    ); /* {printf("%s\n", (*terms)[i].term);} */
+    ){printf("%s\n", (*terms)[i].term);}
 
     fclose(handle);
 };
