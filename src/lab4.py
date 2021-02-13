@@ -20,25 +20,6 @@ def find(L, e):
         mid = (first + last)//2
     return mid + 1
 
-    # while L[mid] != e:
-    #     if L[mid] > e:
-    #         mid = mid//2
-
-    #     elif L[mid] < e:
-    #         first = mid
-    #         mid = (first + last)//2
-    #     if last-first == 1:
-    #         mid = last
-    #     if last-first == 0 and L[mid] != e:
-    #         return -1
-        
-        
-    # if L[mid] == e:
-    #     lowest = mid
-    #     while lowest-1 <= 0 and L[lowest-1] == e:
-    #         lowest-=1
-    #     return lowest
-
 if __name__ == "__main__":
     print(find([1,2,3,4,5,6,7,8,9], 9))
     print(find([1,2,3,4,5,6,7,8,9], 8))

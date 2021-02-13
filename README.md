@@ -15,10 +15,17 @@ _Eric Lefort, Halil Kelebek_
 * implement a version of atoi(), convert from string to integer
 * detect cycles in a linked list data structure using a simplified version of Floyd's tortoise and hare cycle-finding algorithm.
 
+### Lab 4
+* operating on linked lists
+	* free
+	* append
+	* insert
+	* delete
+	* print
+* locating index of element in sorted list in logarithmic time
 
 
-
-### Project 1
+### Project 1: _autocomplete_
 * reading data from a text file
-* sorting arrays of structs by alphabetic data members
-* 
+* sorting arrays of structs using different types of comparisons (qsort)
+* binary search: locating indices of elements in a sorted list in logarithmic time ... again

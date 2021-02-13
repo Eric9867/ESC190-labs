@@ -5,25 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "gcc.exe - Build and debug active file",
-            "type": "cppdbg",
+            "name": "Python: Current File",
+            "type": "python",
             "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "C:\\MinGW\\mingw32\\bin",
-            "environment": [],
-            "console": "externalTerminal",
-            "MIMode": "gdb",
-            "miDebuggerPath": "C:\\MinGW\\mingw32\\bin\\gdb.exe",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "C/C++: gcc.exe build active file"
+            "program": "${file}",
+            "console": "integratedTerminal"
         }
     ]
 }

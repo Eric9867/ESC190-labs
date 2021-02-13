@@ -98,3 +98,8 @@ TBA
 
 
 Credit: the assignment was designed by Kevin Wayne, and adapted to C by Michael Guerzhoy
+
+
+### Questions
+* It says in the intructions that autocomplete should return the top 10 terms that match the query string sorted by weight. In that case, would the answer array always have a length of 10 and n_answer always be 10. This seems unlikely so I feel that I may have misunderstood the question.
+*  
