@@ -3,8 +3,9 @@
 #include <string.h>
 #include "autocomplete.h"
 
-/** TODO: FIX FUNCTION SIGNATURES */
-void read_in_terms(struct Term **terms, int *pnterms, char *filename)
+#define TERM_SIZE 200
+
+void read_in_terms(struct term **terms, int *pnterms, char *filename)
 {
     FILE* handle;
     if(fopen_s(&handle, filename, "r"))
@@ -13,11 +14,11 @@ void read_in_terms(struct Term **terms, int *pnterms, char *filename)
     /* Read number of lines (first line of file) */
     fscanf_s( handle, " %d ", pnterms, sizeof(int) );
     
-    *terms = (struct Term*)malloc(*pnterms * sizeof(struct Term)); 
+    *terms = (struct term*)malloc(*pnterms * sizeof(struct term)); 
     /* loop through the file, creating one term per line */
-    /* Examples
-      14608512	Shanghai, China
-    5627187200	the
+    /** Examples
+     *    14608512	Shanghai, China
+     *  5627187200	the
      */
     for(
         int i = 0;    
@@ -33,15 +34,10 @@ void read_in_terms(struct Term **terms, int *pnterms, char *filename)
     fclose(handle);
 };
 
-int term_comparison(const void* term_1, const void* term_2)
-{
-    return strcmp(((struct Term*)term_1)->term, ((struct Term*)term_2)->term);
-}
-
 int term_weight_comparison(const void *term_1, const void *term_2)
 {
-    double arg1 = ((struct Term*)term_1)->weight;
-    double arg2 = ((struct Term*)term_2)->weight;
+    double arg1 = ((struct term*)term_1)->weight;
+    double arg2 = ((struct term*)term_2)->weight;
     if (arg1 > arg2) return -1;
     else if (arg1 < arg2) return 1;
     else return 0;
@@ -52,7 +48,7 @@ int term_weight_comparison(const void *term_1, const void *term_2)
  * Looking for the lower boundary (in terms of alphabetical 
  * ordering) on strings that begin with the substring
  */
-int lowest_match(struct Term *terms, int n_terms, char *substr)
+int lowest_match(struct term *terms, int n_terms, char *substr)
 {
     int idx_lower = 0;
     int idx_upper = n_terms;
@@ -85,7 +81,7 @@ int lowest_match(struct Term *terms, int n_terms, char *substr)
      */ 
 };
 
-/*
+/**
 Part 2(b)
 =========
 Write a function with the signature
@@ -97,7 +93,7 @@ This function must run in O(log(nterms)) time, where nterms is the number of ter
 
 You can assume that terms is sorted in ascending lexicographic ordering.
 */
-int highest_match(struct Term *terms, int n_terms, char *substr)
+int highest_match(struct term *terms, int n_terms, char *substr)
 {
     int idx_lower = 0;
     int idx_upper = n_terms;
@@ -127,7 +123,7 @@ int highest_match(struct Term *terms, int n_terms, char *substr)
         return -1;
 }
 
-/*
+/**
 Part 3
 ======
 Write a function with the signature 
@@ -138,17 +134,17 @@ The function takes terms (assume it is sorted), the number of terms nterms, and 
 answers in answer, with *n_answer being the number of answers.
 */
 
-void autocomplete(struct Term **answer, int *n_answer, struct Term *terms, int n_terms, char *substr)
+void autocomplete(struct term **answer, int *n_answer, struct term *terms, int n_terms, char *substr)
 {
     int idx_lower = lowest_match(terms, n_terms, substr);
     int idx_upper = highest_match(terms, n_terms, substr);
     *n_answer = idx_upper - idx_lower + 1;    
-    *answer = (struct Term*) malloc((*n_answer) * sizeof(struct Term));
+    *answer = (struct term*) malloc((*n_answer) * sizeof(struct term));
     
     for(int i = 0; i < *n_answer; i++)
     {
         (*answer)[i] = terms[idx_lower + i]; 
     }
 
-    qsort(*answer, *n_answer, sizeof(struct Term), term_weight_comparison);
+    qsort(*answer, *n_answer, sizeof(struct term), term_weight_comparison);
 }
