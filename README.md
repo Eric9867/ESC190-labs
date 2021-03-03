@@ -16,14 +16,19 @@ _Eric Lefort, Halil Kelebek_
 * detect cycles in a linked list data structure using a simplified version of Floyd's tortoise and hare cycle-finding algorithm.
 
 ### Lab 4
-* operating on linked lists
+* operate on linked lists
 	* free
 	* append
 	* insert
 	* delete
 	* print
-* locating index of element in sorted list in logarithmic time
+* locate index of element in sorted list in logarithmic time
 
+### Lab 5
+* implement a simple graph framework
+* find various path lengths using Dijkstra's algorithm
+* use a priority queue to improve time complexity of Dijkstra's algorithm
+_using object-oriented programming_
 
 ### Project 1: _autocomplete_
 * reading data from a text file
