@@ -14,18 +14,17 @@ class Node:
         self.connections = []
         self.visited = False
 
-    def __lt__(self, node):
-        '''
-        Node is less than other node if the distance
-        '''
-        pass
+
+    # def __lt__(self, node):
+    #     '''
+    #     Node is less than other node if the distance
+    #     '''
+    #     return True
 
 class Graph:
     def __init__(self, node_list=[]):
         self.nodes = {}
         
-        # NOTE: watch out! nodes should not be named alike
-        # dictionary ?
         for node in node_list:
             self.nodes[node.name] = node
     
@@ -134,22 +133,41 @@ class Graph:
     # OPTIONAL
     #
 
-    def dijsktra_slowish(self, node):
+    def dijsktra(self, origin_name):
         '''
         Implement Dijkstra's algorithm as discussed in class (i.e., you don't
         need to use a priority queue
-        '''
-        S = [node]
-        d = {node.name: 0}
 
-        unexplored = get_all_nodes(node)
-        unexplored.remove(node)
+        Notes on function
+
+            node: current node closest to our current set of nearest nodes 
+                (next node always at top of unexplored priority queue)
+            node.relative_path_length: the distance from the origin node to 
+                node through the path currently being considered, this is 
+                not always the shortest distance to the node
+            unexplored: a priority queue containing all nodes where the 
+                shortest path to the node hasn't yet been computed
+            shortest_paths: return value, a dictionnary with the shortest
+                paths to each node
+
+        Complexity: O(|E|log|v|)
+
+        '''
+        node = self.nodes[origin_name]
+        unexplored = [(0, node)]
+        shortest_paths = {origin_name: 0}
 
         while len(unexplored) > 0:
-            # your code here
-            pass
+            node_distance, node = heapq.heappop(unexplored)
+            if node.visited:
+                continue
+            node.visited = True
+            shortest_paths[node.name] = node_distance
 
-        return d
+            for connection in node.connections:
+                if not connection['node'].visited:
+                    heapq.heappush(unexplored, (node_distance + connection['weight'], connection['node']))
+        return shortest_paths
 
 
 if __name__ == '__main__':
@@ -176,10 +194,41 @@ if __name__ == '__main__':
     graph.unvisit_all('SF')
     print()
     graph.dfs_nonrec('SF')
+    graph.unvisit_all('SF')
+    print()
+    print()
 
-    # L = get_all_nodes(TO)
-    # DFS(TO)
-    # #DFS_rec(TO)
-    # unvisit_all(TO)
-    # DFS(TO)
-    # print(dijsktra_slowish(TO))
+    print(graph.dijsktra('SF'))
+    graph.unvisit_all('SF')
+
+
+
+
+    # def dijsktra_slowish(self, origin_name):
+    #     node = self.nodes[origin_name]
+    #     unexplored = [node]
+    #     node.relative_path_length = 0
+    #     # relative_path_lengths = {origin_name: [(0, node)]}
+    #     shortest_paths = {}
+
+    #     while len(unexplored) > 0:
+    #         node = heapq.heappop(unexplored)
+    #         shortest_paths[node.name] = node.relative_path_length
+
+    #         for connection in node.connections:
+    #             if not connection['node'].name in shortest_paths:
+    #                 # total_path_length = relative_path_lengths[node.name][0] + connection['weight']
+    #                 total_path_length = node.relative_path_length  + connection['weight']
+    #                 if not connection['node'].visited:
+    #                     connection['node'].visited = True
+
+    #                     # relative_path_lengths[connection['node'].name] = total_path_length
+    #                     connection['node'].relative_path_length = total_path_length
+    #                     heapq.heappush(unexplored, connection['node'])
+    #                 elif connection['node'].relative_path_length > total_path_length:
+    #                     connection['node'].relative_path_length = total_path_length
+    #                     # relative_path_lengths[connection['node']] = total_path_length
+    #                     heapq.heapify(unexplored)
+    #         node.relative_path_length = None ### Maybe change this to reset path length at the end of function
+
+    #     return shortest_paths

@@ -28,7 +28,8 @@ _Eric Lefort, Halil Kelebek_
 * implement a simple graph framework
 * find various path lengths using Dijkstra's algorithm
 * use a priority queue to improve time complexity of Dijkstra's algorithm
-_using object-oriented programming_
+
+_all done using object-oriented programming_
 
 ### Project 1: _autocomplete_
 * reading data from a text file
