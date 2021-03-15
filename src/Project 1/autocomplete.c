@@ -50,7 +50,7 @@ void read_in_terms(struct term** terms, int* pnterms, char* filename)
     if (
       sscanf(line, " %lf %199[^\n] ",
         &(*terms)[i].weight,
-        &(*terms)[i].term
+        (*terms)[i].term
       ) <= 0)
     {
       if (*pnterms > i + 1000) /* MEMORY THRESHOLD FOR REALLOCATING */

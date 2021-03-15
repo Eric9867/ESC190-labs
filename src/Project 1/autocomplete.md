@@ -1,11 +1,11 @@
-# Project 1 -- Autocomplete
+Project 1 -- Autocomplete
 =========================
 
 In this project, you will write a fast implementation of the autocomplete functionality.
 
 You will work with files that contain a large number of terms, along with the importance weight associated with those terms.
 
-The autocomplete task is to quickly retrieve the top 10 terms that match a query string. For example, if the query string is "Eng", you matches might be "English",
+The autocomplete task is to quickly retrieve the top terms that match a query string. For example, if the query string is "Eng", you matches might be "English",
 "Engineering", and "EngSci".
 
 To accomplish the task, you will:
@@ -25,7 +25,7 @@ struct term{
 };
 
 
-### Part 1
+Part 1
 ======
 Write a function with the signature 
 
@@ -35,7 +35,9 @@ The function takes in a pointer to a pointer to struct term, a pointer to an int
 
 The function allocates memory for all the terms in the file and stores a pointer to the block in *terms. The function stores the number of terms in *pnterms. The function reads in all the terms from filename, and places them in the block pointed to by *terms.
 
-### Part 2(a)
+The terms should be sorted in lexicographic order.
+
+Part 2(a)
 =========
 Write a function with the signature
 int lowest_match(struct term *terms, int nterms, char *substr);
@@ -46,7 +48,7 @@ This function must run in O(log(nterms)) time, where nterms is the number of ter
 
 You can assume that terms is sorted in ascending lexicographic ordering.
 
-### Part 2(b)
+Part 2(b)
 =========
 Write a function with the signature
 int highest_match(struct term *terms, int nterms, char *substr);
@@ -57,16 +59,15 @@ This function must run in O(log(nterms)) time, where nterms is the number of ter
 
 You can assume that terms is sorted in ascending lexicographic ordering.
 
-### Part 3
+Part 3
 ======
 Write a function with the signature 
 
 void autocomplete(struct term **answer, int *n_answer, struct term *terms, int nterms, char *substr);
 
-The function takes terms (assume it is sorted), the number of terms nterms, and the query string substr, and places the answers in answer, with *n_answer being the number of answers.
+The function takes terms (assume it is sorted lexicographically), the number of terms nterms, and the query string substr, and places the answers in answer, with *n_answer being the number of answers. The answer should be sorted by weight.
 
 
-#### Additionnal Notes
 Reading in files
 ================
 The following code can be used to read in N lines of a text file line-by-line.
@@ -98,8 +99,3 @@ TBA
 
 
 Credit: the assignment was designed by Kevin Wayne, and adapted to C by Michael Guerzhoy
-
-
-### Questions
-* It says in the intructions that autocomplete should return the top 10 terms that match the query string sorted by weight. In that case, would the answer array always have a length of 10 and n_answer always be 10. This seems unlikely so I feel that I may have misunderstood the question.
-*  

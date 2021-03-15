@@ -190,12 +190,23 @@ if __name__ == '__main__':
     graph.link('NYC', 'DC', 2)
     graph.link('SF', 'DC', 5)
     
-    graph.dfs_rec('SF')
-    graph.unvisit_all('SF')
-    print()
-    graph.dfs_nonrec('SF')
-    graph.unvisit_all('SF')
-    print()
+    # print()
+    # graph.breadth_first_search('TO')
+    # graph.unvisit_all('SF')
+
+    # print()
+    # graph.dfs_nonrec('TO')
+    # graph.unvisit_all('SF')
+
+    # print()
+    # graph.dfs_rec('TO')
+    # graph.unvisit_all('SF')
+    
+    
+    # print()
+    # graph.dfs_nonrec('SF')
+    # graph.unvisit_all('SF')
+    # print()
     print()
 
     print(graph.dijsktra('SF'))
