@@ -31,6 +31,11 @@ _Eric Lefort, Halil Kelebek_
 
 _all done using object-oriented programming_
 
+### Lab 6
+* implements simple binary search tree
+* traversing a binary search tree
+* determining the height of a BST (Note to self: store this value and update it when adding elements)
+
 ### Project 1: _autocomplete_
 * reading data from a text file
 * sorting arrays of structs using different types of comparisons (qsort)
