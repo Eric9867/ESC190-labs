@@ -52,12 +52,12 @@ a.insert(15)
 # Draw (manually) the binary tree rooted in a.
 
         #    4
-        #  /   \
-        # 2      5
-        #  \       \
-        #   3        10
-        #               \ 
-        #                 15
+        #   / \
+        #  2   5
+        #   \   \
+        #    3   10
+        #         \ 
+        #          15
 
 
 # Problem 2
@@ -69,14 +69,22 @@ def bst_height_recursive(tree):
     else:
         return 1 + max(bst_height_recursive(tree.left), bst_height_recursive(tree.right))
 
-
+# Write
 def bst_height(root):
     max_depth = 0
+    visited = [root]
+    next_layer = []
+    while visited:
+        # cur = visited.pop(0)
+        for node in visited:
+            if node.left != None: next_layer.append(node.left)
+            if node.right != None: next_layer.append(node.right)
 
-    node = root
-    while(node.left):
-        pass
+        visited = next_layer
+        next_layer = []
+        max_depth += 1
 
+    return max_depth
 
 
 
@@ -87,7 +95,16 @@ def bst_height(root):
 # from the tree you've drawn?
 # (Modify the BFS function from lecture for this problem)
 
-def BFS_tree(node):
+def BFS_tree_v2(node):
+    visited = [node]
+
+    while visited:
+        cur = visited.pop(0)
+        print(cur)
+        if cur.left != None:  visited.append(cur.left)
+        if cur.right != None: visited.append(cur.right)
+
+def BFS_tree_v1(node):
     depth = 0
     working_nodes = []
     children_nodes = []
@@ -95,12 +112,12 @@ def BFS_tree(node):
 
     while(working_nodes):
         for node in working_nodes:
-            print(node)
+            print(node, end= " ")
             if(node.left):
                 children_nodes.append(node.left)
             if(node.right):
                 children_nodes.append(node.right)
-
+        print("")
         working_nodes = children_nodes
         children_nodes = []
 
@@ -139,8 +156,14 @@ def make_data(max_nodes):
     the number of nodes in a random tree and the height of the tree.
     Generate N_TREES = 40 trees with each of
     n_nodes = 5, int(1.2*5), int(1.2^2*5), .....
-
     return n (a list of values of n_nodes) and h (a list of heights)
+    '''
+
+    ''' loop for N_TREES iters:
+            n.append(int(n_nodes))
+            h.append(height_random_tree(int(n_nodes)))
+            n_nodes *= 1.1
+            
     '''
     N_TREES = 80
     n_nodes = 5.0
@@ -151,31 +174,36 @@ def make_data(max_nodes):
     for i in range(N_TREES):
         n.append(int(n_nodes))
         h.append(height_random_tree(int(n_nodes)))
-        n_nodes *= 1.1 # increase to 1.2 to plot less points
+        n_nodes *= 1.2 # increase to 1.2 to plot less points
         if n_nodes > max_nodes:
             break
 
     return n, h
 
 
-
-
-BFS_tree(a)
+print("BFS 1")
+BFS_tree_v1(a)
+print("\nBFS 2")
+BFS_tree_v2(a)
+print("\n")
 print(bst_height_recursive(a))
+print(bst_height(a))
 
-
-draw = False
+draw = True
 
 if draw:
-    n, h = make_data(10000)
+    n, h = make_data(1000)
     import matplotlib.pyplot as plt
+    import numpy as np
+    x = np.linspace(1,4000, 100)
+    y = np.log2(x)
     plt.scatter(n, h)
+    plt.plot(x,y,'r')
     plt.show()
     # plt.savefig("trees.png")
 
             # logarithmic relationship
 
             # as the tree grows in size, the number of incomplete branches grows ???
+            # How come its not log_2???
             #
-            #
-
