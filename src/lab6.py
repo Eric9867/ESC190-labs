@@ -195,10 +195,10 @@ if draw:
     n, h = make_data(1000)
     import matplotlib.pyplot as plt
     import numpy as np
-    x = np.linspace(1,4000, 100)
-    y = np.log2(x)
     plt.scatter(n, h)
-    plt.plot(x,y,'r')
+    # x = np.linspace(1,1000, 100)
+    # y = 2* np.log2(x)
+    # plt.plot(x,y,'r')
     plt.show()
     # plt.savefig("trees.png")
 
