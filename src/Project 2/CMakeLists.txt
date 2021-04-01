@@ -1,0 +1,1 @@
+add_executable(Project2 seamcarving.c c_img.c)

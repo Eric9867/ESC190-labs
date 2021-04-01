@@ -36,7 +36,15 @@ _all done using object-oriented programming_
 * traversing a binary search tree
 * determining the height of a BST (Note to self: store this value and update it when adding elements)
 
+### Lab 7
+* implements reading binary image file
+* can scale all pixel color values (adjusting brightness)
+* dynamic programming seam-carving algorithm
+
 ### Project 1: _autocomplete_
 * reading data from a text file
 * sorting arrays of structs using different types of comparisons (qsort)
 * binary search: locating indices of elements in a sorted list in logarithmic time ... again
+
+### Project 2: _seam carving_
+* using dynamic programming to identify least important connected path of pixels to remove from an image (content-aware image resizing)
