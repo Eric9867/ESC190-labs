@@ -14,7 +14,7 @@
 #include <stdlib.h>  /* for type size_t */
 
 /* TYPE bag_elem_t -- The type of elements in bags. */
-typedef const void* bag_elem_t;
+typedef const void *bag_elem_t;
 
 /* TYPE bag_t -- The type of a bag. */
 typedef struct bag bag_t;
@@ -114,7 +114,5 @@ bool bag_insert(bag_t *b, bag_elem_t e);
  *    e has been removed from b, except possibly in case of error
  */
 bool bag_remove(bag_t *b, bag_elem_t e);
-
-void bag_print(const bag_t *bag, int indent, void (*print)(bag_elem_t));
 
 #endif/*_BAG_H*/
