@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h> 
 #include "bag.h"
 
 /* MACRO HEIGHT
@@ -569,7 +569,7 @@ void avl_print(const avl_node_t *root, int depth, int indent,
          * indentation for each level of depth in the tree. */
         printf("%*s", depth * indent, "");
         (*print)(root->elem);
-        printf(" [%lu]\n", root->height);
+        printf(" [%zu]\n", root->height);
 
         avl_print(root->left, depth + 1, indent, print);
     }
@@ -595,17 +595,94 @@ void bag_print(const bag_t *bag, int indent, void (*print)(bag_elem_t))
 
 // LAB 8 //
 
+#include <math.h>
 #include "queue_ll.h"
 
 bool is_avl_subtree_rec(avl_node_t* node)
-{
+{ 
+    // Check height of left and right children
+    // Assuming  they dont differ by more than 1 check 1 layer deeper
+    if (!node->left && !node->right)
+        return true;
+    
+    // if (node->left == NULL)
+    //     return HEIGHT(node->right) <= 1;
+
+    // if (node->right == NULL)
+    //     return HEIGHT(node->left) <= 1;
+    
+    if(abs((int)HEIGHT(node->left) - (int)HEIGHT(node->right)) > 1)
+        return false;
     
     return is_avl_subtree_rec(node->left) && is_avl_subtree_rec(node->right);
 }
 
 bool is_avl_tree(bag_t *bag)
 {
-    return is_avl_tree_rec(bag->root)
+    return is_avl_subtree_rec(bag->root);
+    
+    avl_node_t* cur_node;
+
+    queue_node_t* queue = malloc(sizeof(queue_node_t));
+    queue->data = bag->root;
+    queue->next = NULL;
+    
+    while(queue->data) // != NULL
+    {
+        cur_node = (avl_node_t*)dequeue(&queue);
+        if(cur_node->left)
+            enqueue(queue, cur_node->left);
+        
+        if(cur_node->right)
+            enqueue(queue, cur_node->right);
+        
+        if(abs((int)HEIGHT(cur_node->left) - (int)HEIGHT(cur_node->right)) > 1)
+            return false;
+    }
+    return true;
+}
+
+bool bst_node_insert(avl_node_t **node_p, bag_elem_t elem)
+{
+    if (*node_p == NULL)
+    {
+        *node_p = (avl_node_t *)malloc(sizeof(avl_node_t));
+        if (!*node_p)
+          abort();
+        (*node_p)->height = 1;
+        (*node_p)->elem = elem;
+        (*node_p)->right = NULL;
+        (*node_p)->left = NULL;    
+        return true;
+    }
+
+    if ((*node_p)->elem > elem)
+    {
+        (*node_p)->height ++; //FIX THIS Traverse the tree and update each node in separate helper function this doesnt work
+        bst_node_insert(&((*node_p)->left), elem);
+    }
+
+    if ((*node_p)->elem <= elem) // Remove = sign if you dont want duplicate elems
+    {
+        (*node_p)->height ++;
+        bst_node_insert(&((*node_p)->right), elem);
+    }
+
+    return false;   // shouldnt be reachable if duplicates are allowed
+}
 
 
+//PART 2
+
+bool bag_insert_norot(bag_t *bag, bag_elem_t elem)
+{
+    if(bst_node_insert((&bag->root), elem))
+    {
+        bag->size++;
+        return true;
+    }
+    else
+    {
+        return false;
+    }   
 }
