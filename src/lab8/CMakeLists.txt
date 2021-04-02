@@ -1,0 +1,1 @@
+add_executable(lab8 lab8.c avl_bag.c queue_ll.c)

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "Project 2/c_img.h"
 
+#define _CRT_SECURE_NO_WARNINGS
 #define N_FILES 5
 #define PATH "C:/Users/Eric/OneDrive - University of Toronto/Classes/Year 1 Winter/ESC190/Assignments/Labs/src/lab7_extras/"
 #define PATH_MALLOC_LEN 160
