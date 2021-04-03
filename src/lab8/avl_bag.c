@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdbool.h> 
 #include "bag.h"
+#include "queue_ll.h"
 
 /* MACRO HEIGHT
  *    An expression for one more than the height of a node in an AVL tree
@@ -18,6 +19,7 @@
  * Side-effects:  evaluates its argument more than once
  */
 #define HEIGHT(node) ((node) ? (node)->height : 0)
+#define MAX(x,y) ((x) >= (y) ? (x) : (y))
 ////////////////////////////////////////////////////////////////////////////////
 //  Example of macros and side-effects interfering with one another:          //
 //      #define MAX(x,y)  ((x) >= (y) ? (x) : (y))                            //
@@ -250,6 +252,8 @@ void avl_update_height(avl_node_t *node);
 static
 avl_node_t *avl_node_create(bag_elem_t elem);
 
+// static
+bool is_avl_subtree_rec_helper(avl_node_t* node);
 /******************************************************************************
  *  Definitions of "public" functions -- see header file for documentation.   *
  ******************************************************************************/
@@ -598,18 +602,21 @@ void bag_print(const bag_t *bag, int indent, void (*print)(bag_elem_t))
 #include <math.h>
 #include "queue_ll.h"
 
-bool is_avl_subtree_rec(avl_node_t* node)
+bool is_avl_subtree_rec_helper(avl_node_t* node)
 { 
     // Check height of left and right children
     // Assuming  they dont differ by more than 1 check 1 layer deeper
     if (!node->left && !node->right)
         return true;
     
-    // if (node->left == NULL)
-    //     return HEIGHT(node->right) <= 1;
+	// the next 2 if blocks are needed in case a node only has 1 child.
+	// otherwise, is_avl_subtree_rec() will be called on both children
+	// whether or not they exist.
+    if (node->left == NULL)
+        return HEIGHT(node->right) <= 1;
 
-    // if (node->right == NULL)
-    //     return HEIGHT(node->left) <= 1;
+    if (node->right == NULL)
+        return HEIGHT(node->left) <= 1;
     
     if(abs((int)HEIGHT(node->left) - (int)HEIGHT(node->right)) > 1)
         return false;
@@ -617,9 +624,14 @@ bool is_avl_subtree_rec(avl_node_t* node)
     return is_avl_subtree_rec(node->left) && is_avl_subtree_rec(node->right);
 }
 
+bool is_avl_subtree_rec(bag_t *bag)
+{
+    return is_avl_subtree_rec_helper(bag->root);
+}
+
 bool is_avl_tree(bag_t *bag)
 {
-    return is_avl_subtree_rec(bag->root);
+    //return is_avl_subtree_rec(bag->root);
     
     avl_node_t* cur_node;
 
@@ -627,20 +639,41 @@ bool is_avl_tree(bag_t *bag)
     queue->data = bag->root;
     queue->next = NULL;
     
-    while(queue->data) // != NULL
+    while(queue) // != NULL
     {
-        cur_node = (avl_node_t*)dequeue(&queue);
+		
+        cur_node = queue->data;
         if(cur_node->left)
-            enqueue(queue, cur_node->left);
+            enqueue(&queue, cur_node->left);
         
         if(cur_node->right)
             enqueue(queue, cur_node->right);
         
         if(abs((int)HEIGHT(cur_node->left) - (int)HEIGHT(cur_node->right)) > 1)
             return false;
+
+		(avl_node_t*)dequeue(&queue);
     }
     return true;
 }
+
+//PART 2
+size_t update_height(avl_node_t **cur_node)
+{
+    if(*cur_node == NULL)
+    {
+        return 0;
+    }
+
+	if((*cur_node)->left == NULL && (*cur_node)->right == NULL)
+	{
+		return (*cur_node)->height = 1;
+	}
+	
+    return (*cur_node)->height = MAX(update_height(&(*cur_node)->left), update_height(&(*cur_node)->right)) + 1;
+    // return (*cur_node)->height;
+}
+
 
 bool bst_node_insert(avl_node_t **node_p, bag_elem_t elem)
 {
@@ -658,26 +691,25 @@ bool bst_node_insert(avl_node_t **node_p, bag_elem_t elem)
 
     if ((*node_p)->elem > elem)
     {
-        (*node_p)->height ++; //FIX THIS Traverse the tree and update each node in separate helper function this doesnt work
+        //(*node_p)->height ++; //FIX THIS Traverse the tree and update each node in separate helper function this doesnt work
         bst_node_insert(&((*node_p)->left), elem);
     }
 
     if ((*node_p)->elem <= elem) // Remove = sign if you dont want duplicate elems
     {
-        (*node_p)->height ++;
+        //(*node_p)->height ++;
         bst_node_insert(&((*node_p)->right), elem);
     }
 
-    return false;   // shouldnt be reachable if duplicates are allowed
+    return true;   // shouldnt be reachable if duplicates are allowed
 }
 
-
-//PART 2
 
 bool bag_insert_norot(bag_t *bag, bag_elem_t elem)
 {
     if(bst_node_insert((&bag->root), elem))
     {
+        update_height(&bag->root);
         bag->size++;
         return true;
     }
