@@ -718,3 +718,33 @@ bool bag_insert_norot(bag_t *bag, bag_elem_t elem)
         return false;
     }   
 }
+
+bool avl_remove_2(avl_node_t **root, bag_elem_t elem, int (*cmp)(bag_elem_t, bag_elem_t))
+{
+    if(! *root)
+    {
+        return false;
+    }
+    avl_node_t* node = *root;
+
+    while(node)
+    {
+        if(elem == node->elem)
+        {
+            if()
+
+
+        }
+
+        if(cmp(elem, node->elem))
+        {
+            node = node->right;
+        }
+        else
+        {
+            node = node->left;
+        }
+    }
+
+    return false;
+}
